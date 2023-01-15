@@ -48,9 +48,10 @@ void delete_node(pnode *head)
             temp_node = temp_node->next;
             continue;
         }
-        else{
-            temp_node = temp_node->next;
+        else
+        {
             delete_edge(&temp_node, id_delete);
+            temp_node = temp_node->next;
         }
     }
     if (start->id_node == id_delete) // delete node - it's the head
@@ -128,7 +129,8 @@ void insert_node(pnode *head)
     int id = -1;
     scanf("%d", &id);
     pnode new_node = find_node(head, id);
-    if(new_node != NULL){
+    if (new_node != NULL)
+    {
         free_node(&new_node);
         new_node->edges = NULL;
     }
@@ -139,7 +141,7 @@ void insert_node(pnode *head)
         new_node->edges = NULL;
         new_node->next = NULL;
         pnode temp = *head;
-        while(temp->next != NULL)
+        while (temp->next != NULL)
         {
             temp = temp->next;
         }
@@ -148,8 +150,8 @@ void insert_node(pnode *head)
     int w = -1;
     int id_dest = -1;
     pnode node_dest;
-     while (scanf("%d", &id_dest) && id_dest != EOF)
-     {
+    while (scanf("%d", &id_dest) && id_dest != EOF)
+    {
         node_dest = find_node(head, id_dest);
         scanf("%d", &w);
         pedge new_edge = (pedge)malloc(sizeof(edge));
@@ -157,7 +159,7 @@ void insert_node(pnode *head)
         new_edge->weight = w;
         new_edge->next = new_node->edges;
         new_node->edges = new_edge;
-     }
+    }
 }
 
 void build_graph(pnode *head)
@@ -174,7 +176,8 @@ void build_graph(pnode *head)
     start->edges = NULL;
     start->next = NULL;
     pnode temp = start;
-    for(int i = 1; i < num_ver; i++){
+    for (int i = 1; i < num_ver; i++)
+    {
         pnode new_node = (pnode)malloc(sizeof(node));
         new_node->id_node = i;
         new_node->edges = NULL;
@@ -187,11 +190,14 @@ void build_graph(pnode *head)
     pnode curr_node, dest_node;
     char ch = ' ';
     *head = start;
-    while(scanf("%c", &ch) && ch != EOF){
-        if(ch == 'n'){
+    while (scanf("%c", &ch) && ch != EOF)
+    {
+        if (ch == 'n')
+        {
             scanf("%d", &id_curr_node);
             curr_node = find_node(head, id_curr_node);
-            while(scanf("%d", &id_dest) != 0 && id_dest != EOF ){
+            while (scanf("%d", &id_dest) != 0 && id_dest != EOF)
+            {
                 scanf("%d", &w);
                 dest_node = find_node(head, id_dest);
                 pedge new_edge = (pedge)malloc(sizeof(edge));
@@ -202,67 +208,65 @@ void build_graph(pnode *head)
             }
             counter--;
         }
-        if(counter == 0){
+        if (counter == 0)
+        {
             break;
         }
     }
     *head = start;
 }
 
-
-
-pnode low_node(pnode *head)
+pnode low_n(pnode *head)
 {
-    int max_i = INFINI;
-    pnode temp_node = *head;
-    pnode min = temp_node;
-    while (temp_node != NULL)
+    pnode temp = *head;
+    pnode min = temp;
+    int maxi = INFINI;
+    while (temp != NULL)
     {
-        if (temp_node->weight < max_i)
+        if (temp->weight < maxi)
         {
-            if (temp_node->visit == 0)
+            if (temp->visit == 0)
             {
-                max_i = temp_node->weight;
-                min = temp_node;
+                maxi = temp->weight;
+                min = temp;
             }
         }
-        temp_node = temp_node->next;
+        temp = temp->next;
     }
     return min;
 }
 
-int short_path(pnode *head, int src, int dest)
+int shortsPath(pnode *head, int src, int dest)
 {
-    pnode temp_node = *head;
-    int count = 0;
-    while (temp_node != NULL)
+    pnode temp = *head;
+    int counter = 0;
+    while (temp != NULL)
     {
-        temp_node->weight = INFINI - 10;
-        temp_node->visit = 0;
-        count++;
-        temp_node = temp_node->next;
-        
+        temp->weight = INFINI - 10;
+        temp->visit = 0;
+        counter++;
+        temp = temp->next;
     }
-    pnode source_node = find_node(head, src);
-    source_node->weight = 0;
-    while (count > 0)
+    pnode node_src = find_node(head, src);
+    node_src->weight = 0;
+    while (counter > 0)
     {
-        source_node = low_node(head);
-        if (source_node->id_node == dest)
+        node_src = low_n(head);
+        if (node_src->id_node == dest)
         {
-            return source_node->weight;
+            return node_src->weight;
         }
-        pedge source_edge = source_node->edges;
-        source_node->visit = 1;
-        while (source_edge != NULL)
+        pedge s_edge = node_src->edges;
+        node_src->visit = 1;
+        while (s_edge != NULL)
         {
-            if (source_node->weight + source_edge->weight < source_edge->dest_node->weight)
+            if (node_src->weight + s_edge->weight < s_edge->dest_node->weight)
             {
-                source_edge->dest_node->weight = source_node->weight + source_edge->weight;
+                s_edge->dest_node->weight = node_src->weight + s_edge->weight;
             }
-            source_edge = source_edge->next;
+            s_edge = s_edge->next;
         }
-        count--;
+        counter--;
     }
     return 0;
 }
@@ -274,7 +278,6 @@ void swap(int *a, int *b)
     *a = temp;
 }
 
-
 void permotion(pnode *head, int arr[], int size, int num_of_cities)
 {
     if (size == 1)
@@ -282,7 +285,7 @@ void permotion(pnode *head, int arr[], int size, int num_of_cities)
         int path = 0;
         for (int j = 0; j < num_of_cities - 1; j++)
         {
-            path += short_path(head, arr[j], arr[j + 1]);
+            path += shortsPath(head, arr[j], arr[j + 1]);
         }
         if (path < min)
         {
