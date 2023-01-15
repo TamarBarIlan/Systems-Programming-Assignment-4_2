@@ -6,22 +6,17 @@
 #define INFINI 1000000
 static int min = INFINI;
 
-void delete_edge(pnode *curr, int id){
-    pnode n= *curr;
-    pedge ed= n->edges;
-    if(ed->dest_node->id_node == id){
-        pedge temp= ed;
-        n->edges= ed->next;
-        free(temp);
-        return;
-    }
-    while (ed->next != NULL){
-        if(ed->next->dest_node->id_node == id){
-            pedge temp= ed->next;
-            ed->next = ed->next->next;
+void delete_edge(pnode *curr, int id) {
+    pnode n = *curr;
+    pedge *ed = &n->edges;
+    while (*ed) {
+        if((*ed)->dest_node->id_node == id) {
+            pedge temp = *ed;
+            *ed = (*ed)->next;
             free(temp);
-            return;
+            break;
         }
+        ed = &(*ed)->next;
     }
     *curr = n;
 }
