@@ -10,5 +10,9 @@ main.o: main.c graph.h
 graph.o: graph.c graph.h
 	$(CC) $(FLAGS) -c graph.c
 .PHONY: clean all
+
+valgrind:
+	valgrind --leak-check=full ./graph
+
 clean:
 	rm -f *.o *.so graph
