@@ -5,7 +5,7 @@ typedef struct GRAPH_NODE_ *pnode;;
 
 typedef struct edge_ {
     int weight;
-    pnode endpoint;
+    pnode dest_node;
     struct edge_ *next;
 } edge, *pedge;
 
@@ -13,16 +13,16 @@ typedef struct edge_ {
 typedef struct GRAPH_NODE_ {
     int visit;
     int weight;
-    int node_num;
+    int id_node;
     pedge edges;
     struct GRAPH_NODE_ *next;
 } node, *pnode;
 
-void build_graph_cmd(pnode *head);
-void insert_node_cmd(pnode *head);
-void delete_node_cmd(pnode *head);
-void deleteGraph_cmd(pnode* head);
-int shortsPath_cmd(pnode *head, int src, int dest);
+void build_graph(pnode *head);
+void insert_node(pnode *head);
+void delete_node(pnode *head);
+void deleteGraph(pnode* head);
+int shortsPath(pnode *head, int src, int dest);
 void delete_edge(pnode *curr, int id);
 pnode search(pnode *head, int id);
 pnode low_n(pnode *head);
