@@ -21,7 +21,7 @@ typedef struct GRAPH_NODE_ {
 void build_graph(pnode *head);
 void insert_node(pnode *head);
 void delete_node(pnode *head);
-void deleteGraph(pnode* head);
+void delete_graph(pnode *head);
 void free_node (pnode *curr);
 int shortsPath(pnode *head, int src, int dest);
 void delete_edge(pnode *curr, int id);
@@ -29,7 +29,7 @@ pnode find_node(pnode *head, int id);
 pnode low_n(pnode *head);
 void swap(int* a, int *b);
 void permotion(pnode *head, int arr[], int size, int num_of_cities);
-void TSP_cmd(pnode *head);
+void TSP(pnode *head);
 
 
 #endif

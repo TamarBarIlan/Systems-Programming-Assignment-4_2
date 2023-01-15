@@ -2,21 +2,21 @@
 #include "graph.h"
 
 int main(){
-    char ch= 'x';
     pnode temp= NULL;
     pnode *head= &temp;
-    while(scanf("%c", &ch) != EOF){
-        if(ch == 'A'){
+    char method= ' ';
+    while(scanf("%c", &method) != EOF){
+        if(method == 'A'){
             build_graph(head);
         }
-        else if(ch == 'B'){
+        else if(method == 'B'){
             insert_node(head);
         }
-        else if(ch == 'D')
+        else if(method == 'D')
         {
             delete_node(head);
         }
-        else if(ch == 'S'){
+        else if(method == 'S'){
             int src= -1;
             int dest= -1;
             scanf("%d", &src);
@@ -24,10 +24,10 @@ int main(){
             int path= shortsPath(head, src, dest);
             printf("Dijsktra shortest path: %d \n", path);
         }
-        else if(ch == 'T'){
-            TSP_cmd(head);
+        else if(method == 'T'){
+            TSP(head);
         }
     }
-    deleteGraph(head);
+    delete_graph(head);
     return 0;
 }

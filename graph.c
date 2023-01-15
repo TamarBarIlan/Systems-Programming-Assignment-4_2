@@ -111,7 +111,7 @@ void delete_node(pnode *head)
     }
 }
 
-void deleteGraph(pnode *head)
+void delete_graph(pnode *head)
 {
     pnode temp_node = *head;
     while (temp_node != NULL)
@@ -149,75 +149,6 @@ pnode find_node(pnode *head, int id)
     }
     return NULL;
 }
-
-void build_graph(pnode *head)
-{
-    if (*head != NULL)
-    {
-        deleteGraph(head);
-    }
-    pnode start = *head;
-    pnode new_node = NULL;
-    pnode temp = NULL;
-    int counter = 0;
-    int id = -1;
-    scanf("%d", &counter);
-    start = (pnode)malloc(sizeof(node));
-    if (start == NULL)
-    {
-        return;
-    }
-    start->id_node = 0;
-    start->edges = NULL;
-    start->next = NULL;
-    temp = start;
-    for (int i = 1; i < counter; i++)
-    {
-        new_node = (pnode)malloc(sizeof(node));
-        if (new_node == NULL)
-        {
-            return;
-        }
-        new_node->id_node = i;
-        new_node->edges = NULL;
-        new_node->next = NULL;
-        temp->next = new_node;
-        temp = temp->next;
-    }
-    *head = start;
-    char ch = '!';
-    while (scanf("%c", &ch))
-    {
-        if (ch == 'n')
-        {
-            counter--;
-            scanf("%d", &id);
-            pnode curr = find_node(head, id);
-            pedge *first_edge = &(curr->edges);
-            int dest = -1;
-            int w = -1;
-            while (scanf("%d", &dest))
-            {
-                *first_edge = (pedge)malloc(sizeof(edge));
-                if (*first_edge == NULL)
-                {
-                    return;
-                }
-                (*first_edge)->dest_node = find_node(head, dest);
-                (*first_edge)->next = NULL;
-                scanf("%d", &w);
-                (*first_edge)->weight = w;
-                first_edge = &((*first_edge)->next);
-            }
-        }
-        if (counter == 0)
-        {
-            break;
-        }
-    }
-    *head = start;
-}
-
 void insert_node(pnode *head)
 {
     int id = -1;
@@ -254,6 +185,57 @@ void insert_node(pnode *head)
         new_node->edges = new_edge;
      }
 }
+
+void build_graph(pnode *head)
+{
+    if (*head != NULL)
+    {
+        delete_graph(head);
+    }
+    pnode start = *head;
+    int num_ver = -1;
+    scanf("%d", &num_ver);
+    start = (pnode)malloc(sizeof(node));
+    start->id_node = 0;
+    start->edges = NULL;
+    start->next = NULL;
+    pnode temp = start;
+    for(int i = 1; i < num_ver; i++){
+        pnode new_node = (pnode)malloc(sizeof(node));
+        new_node->id_node = i;
+        new_node->edges = NULL;
+        new_node->next = NULL;
+        temp->next = new_node;
+        temp = temp->next;
+    }
+    int counter = num_ver;
+    int id_dest = -1, w = -1, id_curr_node = -1;
+    pnode curr_node, dest_node;
+    char ch = ' ';
+    *head = start;
+    while(scanf("%c", &ch) && ch != EOF){
+        if(ch == 'n'){
+            scanf("%d", &id_curr_node);
+            curr_node = find_node(head, id_curr_node);
+            while(scanf("%d", &id_dest) != 0 && id_dest != EOF ){
+                scanf("%d", &w);
+                dest_node = find_node(head, id_dest);
+                pedge new_edge = (pedge)malloc(sizeof(edge));
+                new_edge->dest_node = dest_node;
+                new_edge->weight = w;
+                new_edge->next = curr_node->edges;
+                curr_node->edges = new_edge;
+            }
+            counter--;
+        }
+        if(counter == 0){
+            break;
+        }
+    }
+    *head = start;
+}
+
+
 
 pnode low_n(pnode *head)
 {
@@ -318,6 +300,7 @@ void swap(int *a, int *b)
     *a = temp;
 }
 
+
 void permotion(pnode *head, int arr[], int size, int num_of_cities)
 {
     if (size == 1)
@@ -347,7 +330,7 @@ void permotion(pnode *head, int arr[], int size, int num_of_cities)
     }
 }
 
-void TSP_cmd(pnode *head)
+void TSP(pnode *head)
 {
     min = INFINI;
     int num = -1;
