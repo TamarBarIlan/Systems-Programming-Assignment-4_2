@@ -21,7 +21,7 @@ int main(){
             int dest= -1;
             scanf("%d", &src);
             scanf("%d", &dest);
-            int path= shortsPath(head, src, dest);
+            int path= short_path(head, src, dest);
             printf("Dijsktra shortest path: %d \n", path);
         }
         else if(method == 'T'){
